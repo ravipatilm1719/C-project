@@ -1,0 +1,19 @@
+name: Run C Program
+
+on:
+  push:
+  workflow_dispatch:   # allows manual run also
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Compile
+      run: gcc main.c fact.c big2.c rev.c -o main
+
+    - name: Run
+      run: ./main
