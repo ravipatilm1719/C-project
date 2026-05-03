@@ -1,7 +1,7 @@
 #include <stdio.h>
 reverse()
 {
-  char str[1000], rev[1000]
+  char str[1000], rev[1000];
   int i, j, count = 0;
 printf("\nEnter string to reverse");
   scanf("%s", str);
