@@ -1,19 +1,47 @@
-name: Run C Program
+name: C Project CI Pipeline
 
 on:
   push:
-  workflow_dispatch:   # allows manual run also
+    branches: [ "main" ]
+  pull_request:
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Compile
+    - name: Compile Code
       run: gcc main.c fact.c big2.c rev.c -o main
 
-    - name: Run
-      run: ./main
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: c-program
+        path: ./main
+
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: c-program
+
+    - name: Give execute permission
+      run: chmod +x main
+
+    - name: Run Program with Input
+      run: |
+        echo -e "5\nhello\n10 20" | ./main > output.txt
+
+    - name: Validate Output
+      run: |
+        cat output.txt
+        grep "Factorial" output.txt
